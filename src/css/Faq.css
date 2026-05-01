@@ -1,0 +1,125 @@
+.faq-section {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  position: relative;
+  width: 100%;
+}
+
+.faq-mask {
+  overflow: hidden;
+  position: relative;
+  display: block;
+}
+
+.faq-mask-padded {
+  padding-bottom: 0.5rem;
+  margin-bottom: -0.5rem;
+}
+
+.faq-inner {
+  will-change: transform;
+  display: block;
+}
+
+.faq-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  transition: border-color 0.4s ease, background-color 0.4s ease;
+  padding-top: 6vh !important;
+  padding-bottom: 6vh !important;
+}
+
+.faq-row:first-of-type {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.faq-row:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.faq-answer {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  font-size: 1.8rem !important;
+  line-height: 1.4 !important;
+}
+
+.faq-row:hover .faq-answer {
+  opacity: 1 !important;
+}
+
+.faq-question {
+  transition: color 0.4s ease-in-out;
+  font-size: 3.2rem !important;
+}
+
+.faq-row:hover .faq-question {
+  color: #cccccc !important;
+}
+
+@media (max-width: 1024px) {
+  .faq-section {
+    padding: 6rem 1.5rem !important;
+  }
+
+  .faq-header-wrap {
+    flex-direction: column !important;
+    align-items: center !important;
+    border-bottom: none !important;
+    padding-bottom: 2rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .faq-titles-wrap {
+    margin-right: 0 !important;
+    text-align: center !important;
+    margin-top: 1rem !important;
+  }
+
+  .faq-titles-wrap .faq-inner {
+    font-size: clamp(3.5rem, 12vw, 4.5rem) !important;
+  }
+
+  .faq-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 2rem 0 !important;
+  }
+
+  .faq-id-wrap {
+    width: 100% !important;
+    order: 1 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .faq-q-wrap {
+    width: 100% !important;
+    text-align: left !important;
+    order: 2 !important;
+  }
+
+  .faq-question {
+    font-size: clamp(2rem, 8vw, 2.5rem) !important;
+  }
+
+  .faq-a-wrap {
+    width: 100% !important;
+    order: 3 !important;
+    padding: 0 !important;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out, margin-top 0.4s ease;
+    overflow: hidden !important;
+  }
+
+  .faq-answer {
+    font-size: clamp(1rem, 5vw, 1.25rem) !important;
+    padding-right: 0 !important;
+    opacity: 1 !important;
+  }
+
+  .faq-row.is-active .faq-a-wrap {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 1rem !important;
+  }
+}

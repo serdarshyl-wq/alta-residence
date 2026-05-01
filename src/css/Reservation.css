@@ -1,0 +1,92 @@
+.res-section {
+  width: 100%;
+  position: relative;
+  background-color: var(--color-bg);
+}
+
+.res-form-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.9rem 0;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  letter-spacing: 1.5px;
+  transition: border-color 0.3s ease;
+  width: 100%;
+}
+
+.res-form-input:focus {
+  outline: none;
+  border-color: #fff;
+}
+
+.res-form-input::placeholder {
+  color: #777;
+}
+
+.res-overlay-gradient {
+  background: linear-gradient(to bottom, rgba(15, 15, 15, 0.9) 0%, rgba(15, 15, 15, 0) 50%);
+}
+
+
+@media (max-width: 1024px) {
+  .res-section {
+    min-height: auto !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding-bottom: 4rem !important;
+  }
+
+  .res-img-wrap {
+    position: absolute !important;
+    height: 100% !important;
+  }
+
+  .res-text-wrap {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    margin-top: 8rem !important;
+    padding: 0 1.5rem !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+
+  .res-text-title {
+    font-size: clamp(2.5rem, 8vw, 3rem) !important;
+    text-align: center !important;
+  }
+
+  .res-text-desc {
+    font-size: clamp(1.05rem, 5vw, 1.25rem) !important;
+    text-align: center !important;
+    margin: 2rem auto 0 auto !important;
+  }
+
+  .res-card-wrap {
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 90% !important;
+    margin: 4rem auto 0 auto !important;
+    height: auto !important;
+    padding: 4rem 1.5rem !important;
+    border-radius: 1.5rem !important;
+  }
+
+  .res-card-title {
+    font-size: clamp(2.5rem, 9vw, 3.5rem) !important;
+  }
+
+  .res-card-desc {
+    font-size: clamp(1rem, 5vw, 1.2rem) !important;
+  }
+
+  .res-card-wrap form {
+    gap: 1.5rem !important;
+    margin-top: 2.5rem !important;
+  }
+}

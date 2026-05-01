@@ -1,0 +1,308 @@
+.home-details-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: var(--color-bg);
+  display: flex;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.hd-left {
+  position: relative;
+  flex: 0 0 65%;
+  height: 100vh;
+}
+
+.hd-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hd-blinds-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hd-thumbnails-container {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+.hd-thumbnail {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 300ms ease;
+  opacity: 0.6;
+}
+
+.hd-thumbnail:hover {
+  opacity: 1;
+}
+
+.hd-thumbnail.active {
+  opacity: 1;
+  border-color: #ffffff;
+}
+
+.hd-right {
+  flex: 0 0 35%;
+  height: 100vh;
+  background-color: var(--color-bg-deep);
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text);
+  overflow-y: auto;
+}
+
+.hd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.hd-clip {
+  overflow: hidden;
+  display: block;
+}
+
+.hd-inner {
+  display: block;
+  will-change: transform;
+}
+
+.hd-logo {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  letter-spacing: 0.1em;
+}
+
+.hd-close-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  transition: all 300ms ease;
+}
+
+.hd-close-btn:hover {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.hd-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+  margin-bottom: 2.5rem;
+}
+
+.hd-subtitle {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.hd-description {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.hd-book-btn {
+  align-self: flex-start;
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 1rem 2.5rem;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: opacity 300ms ease;
+  border: none;
+  cursor: pointer;
+}
+
+.hd-book-btn:hover {
+  opacity: 0.8;
+}
+
+.hd-room-info {
+  margin-top: 3rem;
+}
+
+.hd-room-name {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-style: italic;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.hd-room-area-container {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.hd-room-area-val {
+  font-family: var(--font-body);
+  font-size: 9rem;
+  line-height: 1;
+}
+
+.hd-room-area-unit {
+  font-family: var(--font-body);
+  font-size: 2rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.hd-room-area-label {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 1024px) {
+  body.hd-overlay-open {
+    overflow: hidden !important;
+  }
+
+  .home-details-overlay {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    overscroll-behavior: none !important;
+  }
+
+  .hd-thumbnails-container {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(0, 0, 0, 0.55) !important;
+  }
+
+  .hd-left {
+    flex: none !important;
+    width: 100% !important;
+    height: 50vh !important;
+  }
+
+  .hd-thumbnails-container {
+    bottom: auto !important;
+    top: 50% !important;
+    left: auto !important;
+    right: 1rem !important;
+    transform: translateY(-50%) !important;
+    flex-direction: column !important;
+  }
+
+  .hd-thumbnail {
+    width: 4rem !important;
+    height: 4rem !important;
+  }
+
+  .hd-right {
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 50vh !important;
+    padding: 2rem 1.5rem !important;
+    overflow-y: visible !important;
+  }
+
+  .hd-logo {
+    font-size: clamp(1.5rem, 5vw, 2rem) !important;
+  }
+
+  .hd-subtitle {
+    font-size: clamp(1.8rem, 6vw, 2.2rem) !important;
+  }
+
+  .hd-description {
+    font-size: clamp(1rem, 4.5vw, 1.25rem) !important;
+  }
+
+  .hd-book-btn {
+    padding: 0.8rem 2rem !important;
+    font-size: 1rem !important;
+  }
+
+  .hd-room-info {
+    margin-top: 2rem !important;
+  }
+
+  .hd-room-name {
+    font-size: clamp(1.4rem, 5vw, 1.8rem) !important;
+  }
+
+  .hd-room-area-val {
+    font-size: clamp(5rem, 15vw, 9rem) !important;
+  }
+
+  .hd-room-area-unit {
+    font-size: clamp(1.2rem, 4vw, 2rem) !important;
+  }
+
+  .hd-m-order-1 {
+    order: 1 !important;
+  }
+
+  .hd-m-order-2 {
+    order: 2 !important;
+  }
+
+  .hd-m-order-3 {
+    order: 3 !important;
+  }
+
+  .hd-m-order-4 {
+    order: 4 !important;
+  }
+
+  .hd-m-order-5 {
+    order: 5 !important;
+  }
+
+  .hd-m-order-6 {
+    order: 6 !important;
+  }
+
+  .hd-m-order-3 {
+    margin-top: 0 !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .hd-m-order-4 {
+    margin-top: 0 !important;
+    margin-bottom: 3rem !important;
+  }
+
+  .hd-m-order-5 {
+    margin-bottom: 1rem !important;
+  }
+}
