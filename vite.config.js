@@ -26,14 +26,18 @@ export default defineConfig({
         deadCodeInjection: false,
         identifierNamesGenerator: 'hexadecimal',
         renameGlobals: false,
-        selfDefending: true,
+        // selfDefending breaks under Vercel's brotli/gzip pipeline (false-positive "modified
+        // code detected") and can cause a blank-screen hang in production.
+        selfDefending: false,
         simplify: true,
         splitStrings: true,
         splitStringsChunkLength: 10,
         stringArray: true,
         stringArrayEncoding: ['base64'],
         stringArrayThreshold: 0.75,
-        transformObjectKeys: true,
+        // transformObjectKeys can break libraries that rely on literal property access
+        // (React/GSAP internals); leave off to avoid runtime errors in production.
+        transformObjectKeys: false,
         unicodeEscapeSequence: false,
       },
     }),
