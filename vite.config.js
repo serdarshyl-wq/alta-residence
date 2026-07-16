@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import obfuscator from 'vite-plugin-javascript-obfuscator'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   // Disable Vite's esbuild minifier so it doesn't re-mangle the obfuscated names back
   // to short identifiers. javascript-obfuscator's `compact: true` handles compaction.
   build: {
@@ -13,7 +13,13 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    obfuscator({
+    // The SSR bundle only ever runs on our own build machine (to produce
+    // prerendered HTML) — it never ships to a browser, so there's nothing to
+    // protect by obfuscating it, only risk: each `vite build` invocation
+    // obfuscates independently with randomized identifier/string encoding,
+    // and a subtle transform bug there was a real suspect behind a
+    // hydration mismatch we chased for a while. Keep it client-only.
+    !isSsrBuild && obfuscator({
       apply: 'build', // production build only — dev keeps fast HMR
       include: ['**/*.js', '**/*.jsx'],
       // App.jsx is excluded because its string obfuscation would rewrite any
@@ -45,4 +51,4 @@ export default defineConfig({
       },
     }),
   ],
-})
+}))
