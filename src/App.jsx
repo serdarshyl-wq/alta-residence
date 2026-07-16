@@ -1,5 +1,4 @@
 import { useRef, useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Hero from './components/Hero'
@@ -101,12 +100,14 @@ function App({ url } = {}) {
 
   return (
     <>
-      {/* React 19 hoists <title>/<meta>/<link> in render order rather than
-          letting a nested Helmet override an outer one, so only one of
-          these blocks may be mounted at a time — HomeDetails renders its
-          own when a living is open. */}
+      {/* React 19 hoists <title>/<meta>/<link>/<script> anywhere in the tree
+          into <head> on its own, both during SSR and on the client — no
+          Helmet library needed, and none of the double-management conflicts
+          that come with layering one on top of React's native handling.
+          Still only one of these blocks may be mounted at a time — HomeDetails
+          renders its own when a living is open. */}
       {!activeLiving && (
-        <Helmet>
+        <>
           <title>{DEFAULT_TITLE}</title>
           <meta name="description" content={DEFAULT_DESCRIPTION} />
           <link rel="canonical" href={`${SITE_URL}/`} />
@@ -126,7 +127,7 @@ function App({ url } = {}) {
           <script type="application/ld+json">
             {JSON.stringify(getHomeSchema())}
           </script>
-        </Helmet>
+        </>
       )}
 
       <Navbar headerRef={navbarHeaderRef} lineRef={navbarLineRef} setActiveLiving={setActiveLiving} />

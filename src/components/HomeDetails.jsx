@@ -1,6 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { flushSync } from 'react-dom'
-import { Helmet } from 'react-helmet-async'
 import gsap from 'gsap'
 import { X } from 'lucide-react'
 import livingDetails from '../data/livingDetails.json'
@@ -219,27 +218,26 @@ function HomeDetails({ activeLiving, onClose }) {
 
   return (
     <div ref={overlayRef} className="home-details-overlay">
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={details.description} />
-        <link rel="canonical" href={pageUrl} />
+      {/* React 19 hoists these into <head> on its own — no Helmet needed. */}
+      <title>{pageTitle}</title>
+      <meta name="description" content={details.description} />
+      <link rel="canonical" href={pageUrl} />
 
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content={SITE_NAME} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={details.description} />
-        <meta property="og:image" content={ogImageUrl} />
-        <meta property="og:url" content={pageUrl} />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content={SITE_NAME} />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={details.description} />
+      <meta property="og:image" content={ogImageUrl} />
+      <meta property="og:url" content={pageUrl} />
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={details.description} />
-        <meta name="twitter:image" content={ogImageUrl} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={pageTitle} />
+      <meta name="twitter:description" content={details.description} />
+      <meta name="twitter:image" content={ogImageUrl} />
 
-        <script type="application/ld+json">
-          {JSON.stringify(getLivingSchema(details, pageUrl, ogImageUrl))}
-        </script>
-      </Helmet>
+      <script type="application/ld+json">
+        {JSON.stringify(getLivingSchema(details, pageUrl, ogImageUrl))}
+      </script>
 
       {/* Left Pane */}
       <div ref={leftPaneRef} className="hd-left">
