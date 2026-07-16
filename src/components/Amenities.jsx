@@ -52,7 +52,11 @@ export default function Amenities() {
         } else {
           gsap.set(smallImgRefs.current[i], { yPercent: 100 })
           gsap.set(largeImgSlices.current[i], { clipPath: 'inset(0% 0% 100% 0%)' })
-          gsap.set(textRefs.current[i], { yPercent: 100 })
+          // opacity, not just yPercent — on mobile the mask's clip height and
+          // the title's true (multi-line) rendered height don't always land
+          // on the same pixel, leaving a faint sliver of the topmost title
+          // (the last slide, since it paints above its siblings) visible.
+          gsap.set(textRefs.current[i], { yPercent: 100, opacity: 0 })
           gsap.set(descRefs.current[i], { yPercent: 100, opacity: 0 })
           gsap.set(lineRefs.current[i], isDesktop ? { scaleY: 0, scaleX: 1 } : { scaleX: 0, scaleY: 1 })
         }
@@ -73,10 +77,10 @@ export default function Amenities() {
         const next = i + 1;
         const stepTime = `step${i}`
 
-        tl.to(textRefs.current[i], { yPercent: -100, duration: 1 }, stepTime)
+        tl.to(textRefs.current[i], { yPercent: -100, opacity: 0, duration: 1 }, stepTime)
           .to(descRefs.current[i], { yPercent: -50, opacity: 0, duration: 1 }, stepTime)
           .to(smallImgRefs.current[i], { yPercent: -20, duration: 1 }, stepTime)
-          .to(textRefs.current[next], { yPercent: 0, duration: 1 }, stepTime)
+          .to(textRefs.current[next], { yPercent: 0, opacity: 1, duration: 1 }, stepTime)
           .to(descRefs.current[next], { yPercent: 0, opacity: 1, duration: 1 }, stepTime)
 
         if (isDesktop) {

@@ -194,6 +194,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   body {
@@ -204,6 +206,7 @@
     line-height: 1.75;
     min-height: 100dvh;
     overflow-x: hidden;
+    width: 100%;
   }
 
   /* Typography */

@@ -69,12 +69,12 @@ export default function Faq() {
 
         <div className="faq-titles-wrap text-right">
           <div className="faq-mask faq-mask-padded">
-            <h2 className="faq-inner faq-header-title text-[10.5rem] leading-[0.9] uppercase whitespace-nowrap font-(--font-display) tracking-tight text-white">
+            <h2 className="faq-inner faq-header-title text-[10.5rem] leading-[0.9] uppercase whitespace-nowrap max-lg:whitespace-normal font-(--font-display) tracking-tight text-white">
               YOUR QUESTIONS,
             </h2>
           </div>
           <div className="faq-mask faq-mask-padded">
-            <h2 className="faq-inner faq-header-title text-[10.5rem] leading-[0.9] uppercase whitespace-nowrap font-(--font-display) tracking-tight text-white">
+            <h2 className="faq-inner faq-header-title text-[10.5rem] leading-[0.9] uppercase whitespace-nowrap max-lg:whitespace-normal font-(--font-display) tracking-tight text-white">
               ANSWERED
             </h2>
           </div>

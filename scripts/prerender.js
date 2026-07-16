@@ -26,8 +26,13 @@ for (const url of routes) {
   const headTags = html.match(HEAD_TAG_RE) ?? []
   const rootHtml = html.replace(HEAD_TAG_RE, '')
 
+  // No separator between tags: React's own hydration reconciles these head
+  // elements against its component tree even though they sit outside the
+  // #root hydration boundary, and it doesn't insert whitespace text nodes
+  // between adjacent ones — joining with '\n    ' here did, which is what
+  // triggered React error #418 (hydration mismatch) in production.
   const page = template
-    .replace('</head>', `${headTags.join('\n    ')}\n  </head>`)
+    .replace('</head>', `${headTags.join('')}</head>`)
     .replace('<div id="root"></div>', `<div id="root">${rootHtml}</div>`)
 
   const outPath = url === '/'
