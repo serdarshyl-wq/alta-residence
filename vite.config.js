@@ -16,7 +16,10 @@ export default defineConfig({
     obfuscator({
       apply: 'build', // production build only — dev keeps fast HMR
       include: ['**/*.js', '**/*.jsx'],
-      exclude: [/node_modules/],
+      // App.jsx is excluded because its string obfuscation would rewrite any
+      // dynamic import() specifiers into runtime-computed values, which stops
+      // Rollup from statically resolving them for code-splitting.
+      exclude: [/node_modules/, /[\\/]App\.jsx$/],
       options: {
         compact: true,
         // disabled per request: switch-case control flow + while-loop debug protection

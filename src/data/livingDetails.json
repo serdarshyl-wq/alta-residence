@@ -1,0 +1,97 @@
+{
+  "Maison Aurélie": {
+    "id": 1,
+    "name": "Maison Aurélie",
+    "description": "Two-level sanctuaries flooded with natural light, where floor-to-ceiling glass meets hand-crafted stonework. Each duplex offers a private terrace with unobstructed city views.",
+    "rooms": [
+      {
+        "name": "Living Room",
+        "image": "/products/Maison Solène.jpg",
+        "thumb": "/products/thumbs/Maison Solène-thumb.webp",
+        "area": 450
+      },
+      {
+        "name": "Bathroom",
+        "image": "/products/Maison Solène-bathroom.webp",
+        "thumb": "/products/thumbs/Maison Solène-bathroom-thumb.webp",
+        "area": 120
+      },
+      {
+        "name": "Bedroom",
+        "image": "/products/Maison Solène-bedroom.webp",
+        "thumb": "/products/thumbs/Maison Solène-bedroom-thumb.webp",
+        "area": 240
+      },
+      {
+        "name": "Kitchen",
+        "image": "/products/Maison Solène-kitchen.webp",
+        "thumb": "/products/thumbs/Maison Solène-kitchen-thumb.webp",
+        "area": 300
+      }
+    ]
+  },
+  "Marbre Grand": {
+    "id": 2,
+    "name": "Marbre Grand",
+    "description": "Commanding the uppermost floors, the Crown Penthouse is a singular expression of refined luxury — double-height living, private rooftop garden, and bespoke finishes throughout.",
+    "rooms": [
+      {
+        "name": "Living Room",
+        "image": "/products/Velour Grand-living-room.webp",
+        "thumb": "/products/thumbs/Velour Grand-living-room-thumb.webp",
+        "area": 500,
+        "objectPosition": "center 80%"
+      },
+      {
+        "name": "Bathroom",
+        "image": "/products/Velour Grand-bathroom.webp",
+        "thumb": "/products/thumbs/Velour Grand-bathroom-thumb.webp",
+        "area": 150
+      },
+      {
+        "name": "Bedroom",
+        "image": "/products/Velour Grand-bedroom.webp",
+        "thumb": "/products/thumbs/Velour Grand-bedroom-thumb.webp",
+        "area": 280
+      },
+      {
+        "name": "Kitchen",
+        "image": "/products/Velour Grand-kitchen.webp",
+        "thumb": "/products/thumbs/Velour Grand-kitchen-thumb.webp",
+        "area": 350,
+        "objectPosition": "center 50%"
+      }
+    ]
+  },
+  "Lumière Atelier": {
+    "id": 3,
+    "name": "Lumière Atelier",
+    "description": "Intimate residences designed around natural rhythms — each suite pairs warm oak millwork with travertine surfaces, framed by gardens that drift into the horizon.",
+    "rooms": [
+      {
+        "name": "Living Room",
+        "image": "/products/interior-3.webp",
+        "thumb": "/products/thumbs/interior-3-thumb.webp",
+        "area": 400
+      },
+      {
+        "name": "Bathroom",
+        "image": "/products/Obsidian Atelier.jpg",
+        "thumb": "/products/thumbs/Obsidian Atelier-thumb.webp",
+        "area": 110
+      },
+      {
+        "name": "Bedroom",
+        "image": "/products/Obsidian Atelier-bedroom.webp",
+        "thumb": "/products/thumbs/Obsidian Atelier-bedroom-thumb.webp",
+        "area": 220
+      },
+      {
+        "name": "Kitchen",
+        "image": "/products/Obsidian Atelier-kitchen.webp",
+        "thumb": "/products/thumbs/Obsidian Atelier-kitchen-thumb.webp",
+        "area": 280
+      }
+    ]
+  }
+}

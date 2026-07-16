@@ -8,6 +8,12 @@
   will-change: transform, opacity;
 }
 
+/* Was previously scoped to the mobile media query only, so on desktop the
+   background page kept scrolling under the overlay. */
+body.hd-overlay-open {
+  overflow: hidden;
+}
+
 .hd-left {
   position: relative;
   flex: 0 0 65%;
@@ -190,10 +196,6 @@
 }
 
 @media (max-width: 1024px) {
-  body.hd-overlay-open {
-    overflow: hidden !important;
-  }
-
   .home-details-overlay {
     flex-direction: column !important;
     overflow-y: auto !important;

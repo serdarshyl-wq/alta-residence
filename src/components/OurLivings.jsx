@@ -1,7 +1,8 @@
 import { useRef, useEffect, useLayoutEffect, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { livings } from '../data/Livings'
+import livings from '../data/livings.json'
+import { preloadLivingImages } from '../utils/preloadLivingImages'
 import '../css/OurLivings.css'
 
 const total = livings.length
@@ -45,13 +46,16 @@ function OurLivings({ setActiveLiving }) {
     if (isFirstMountRef.current) {
       const mobile = isMobileNow()
 
+      // Slides start below the bottom of the section and rise into place —
+      // no opacity involved, so they're fully visible the instant they move.
+      const riseFrom = stageRef.current.offsetHeight
+
       if (mobile) {
-        // Mobile: all slides stacked at top-left of slides-wrap, only active will fade in via entrance
         livings.forEach((_, i) => {
           gsap.set(slideRefs.current[i], {
             xPercent: -50, yPercent: -50,
-            x: 0, y: 0,
-            opacity: 0,
+            x: 0, y: i === idx ? riseFrom : 0,
+            opacity: i === idx ? 1 : 0,
           })
         })
       } else {
@@ -62,8 +66,8 @@ function OurLivings({ setActiveLiving }) {
           const state = getSlotState(slot, stageWidth, centerW)
           gsap.set(slideRefs.current[i], {
             xPercent: -50, yPercent: -50,
-            x: state.x, y: state.y,
-            opacity: 0,
+            x: state.x, y: state.y + riseFrom,
+            opacity: state.opacity,
           })
         })
       }
@@ -87,16 +91,30 @@ function OurLivings({ setActiveLiving }) {
     })
 
     if (mobile) {
-      tl.to(slideRefs.current[idx], { opacity: 1, duration: 0.9, ease: 'power3.out' })
+      tl.to(slideRefs.current[idx], { y: 0, duration: 0.9, ease: 'power3.out' })
         .to(titleInnerRef.current, { y: '0%', duration: 0.6, ease: 'power3.out' }, '-=0.5')
         .to(descInnerRef.current, { y: '0%', duration: 0.5, ease: 'power3.out' }, '-=0.3')
     } else {
-      tl.to(slideRefs.current[idx],
-        { opacity: 1, duration: 0.9, ease: 'power3.out' })
-        .to(slideRefs.current.filter((_, i) => i !== idx),
-          { opacity: 0.7, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-        .to(titleInnerRef.current, { y: '0%', duration: 0.6, ease: 'power3.out' }, '-=0.4')
-        .to(descInnerRef.current, { y: '0%', duration: 0.5, ease: 'power3.out' }, '-=0.3')
+      const stageWidth = stageRef.current.offsetWidth
+      const centerW = slideRefs.current[0].offsetWidth
+
+      const centerI = livings.findIndex((_, i) => slotForElement(i, idx) === 1)
+      const leftI = livings.findIndex((_, i) => slotForElement(i, idx) === 0)
+      const rightI = livings.findIndex((_, i) => slotForElement(i, idx) === 2)
+
+      const riseIn = (i, at) => {
+        const state = getSlotState(slotForElement(i, idx), stageWidth, centerW)
+        tl.to(slideRefs.current[i], { y: state.y, duration: 0.9, ease: 'power3.out' }, at)
+      }
+
+      // Center rises in first, then left, then right — each overlapping
+      // the previous slightly so the sequence reads as one continuous motion.
+      riseIn(centerI, 0)
+      riseIn(leftI, 0.25)
+      riseIn(rightI, 0.45)
+
+      tl.to(titleInnerRef.current, { y: '0%', duration: 0.6, ease: 'power3.out' }, 0.3)
+        .to(descInnerRef.current, { y: '0%', duration: 0.5, ease: 'power3.out' }, 0.45)
     }
 
     return () => ScrollTrigger.getAll().forEach(t => t.kill())
@@ -223,25 +241,18 @@ function OurLivings({ setActiveLiving }) {
   return (
     <section
       ref={sectionRef}
-      className="ourlivings-section relative overflow-hidden pt-40"
-      style={{ background: 'var(--color-bg)' }}
+      className="ourlivings-section relative overflow-hidden pt-40 bg-(--color-bg)"
     >
       <div
         ref={stageRef}
-        className="ourlivings-stage relative"
-        style={{ height: '100vh', minHeight: '700px' }}
+        className="ourlivings-stage relative h-screen min-h-[700px]"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
 
         <div className="ourlivings-header absolute -top-10 left-0 right-0 px-24 flex items-end justify-between z-50 pointer-events-none">
           <span
-            className="ourlivings-header-label italic text-[4rem]"
-            style={{
-              fontFamily: 'var(--font-body)',
-              color: 'var(--color-text-muted)',
-              transform: 'translateX(6rem)',
-            }}
+            className="ourlivings-header-label italic text-[4rem] font-(--font-body) text-(--color-text-muted) translate-x-24"
           >
             (Our Livings)
           </span>
@@ -252,13 +263,11 @@ function OurLivings({ setActiveLiving }) {
 
         <div
           ref={titleClipRef}
-          className="living-title-clip living-clip absolute left-0 right-0 z-20 text-center pointer-events-none"
-          style={{ top: '15%' }}
+          className="living-title-clip living-clip absolute left-0 right-0 z-20 text-center pointer-events-none top-[15%]"
         >
           <h2
             ref={titleInnerRef}
-            className="living-inner living-title whitespace-nowrap"
-            style={{ fontSize: 'clamp(3.5rem, 7vw, 7.5rem)' }}
+            className="living-inner living-title whitespace-nowrap text-[clamp(3.5rem,7vw,7.5rem)]"
           >
             {livings[idx].name}
           </h2>
@@ -278,13 +287,7 @@ function OurLivings({ setActiveLiving }) {
                 tabIndex={isCenter ? -1 : 0}
                 aria-label={isLeft ? 'Previous living' : (!isCenter ? 'Next living' : undefined)}
                 onClick={isCenter ? undefined : () => go(isLeft ? 'prev' : 'next')}
-                className={`living-slide absolute ${isCenter ? '' : 'living-side'}`}
-                style={{
-                  left: '50%',
-                  top: '50%',
-                  width: 'clamp(28rem, 36vw, 40rem)',
-                  aspectRatio: '3/4',
-                }}
+                className={`living-slide absolute left-1/2 top-1/2 w-[clamp(28rem,36vw,40rem)] aspect-3/4 ${isCenter ? '' : 'living-side'}`}
               >
                 <img src={item.image} alt={item.name} />
               </div>
@@ -292,16 +295,14 @@ function OurLivings({ setActiveLiving }) {
           })}
         </div>
 
-        <div className="ourlivings-bottom absolute left-0 right-0 flex justify-center z-30 pointer-events-auto" style={{ bottom: '4%' }}>
+        <div className="ourlivings-bottom absolute left-0 right-0 flex justify-center z-30 pointer-events-auto bottom-[4%]">
           <div
-            className="ourlivings-bottom-inner flex items-center gap-10"
-            style={{ width: 'clamp(28rem, 36vw, 40rem)' }}
+            className="ourlivings-bottom-inner flex items-center gap-10 w-[clamp(28rem,36vw,40rem)]"
           >
             <div ref={descClipRef} className="living-clip flex-1">
               <p
                 ref={descInnerRef}
-                className="living-inner text-[1.1rem] leading-relaxed"
-                style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text)', maxWidth: 'none' }}
+                className="living-inner text-[1.1rem] leading-relaxed font-(--font-body) text-(--color-text) max-w-none"
               >
                 {livings[idx].description}
               </p>
@@ -312,12 +313,8 @@ function OurLivings({ setActiveLiving }) {
                 e.preventDefault()
                 if (setActiveLiving) setActiveLiving(livings[idx].name)
               }}
-              className="living-explore shrink-0 flex items-center justify-center text-[0.85rem] uppercase tracking-[0.2em] px-8 py-3"
-              style={{
-                fontFamily: 'var(--font-heading)',
-                minWidth: '9rem',
-                height: '2.75rem',
-              }}
+              onMouseEnter={() => preloadLivingImages(livings[idx].name)}
+              className="living-explore shrink-0 flex items-center justify-center text-[0.85rem] uppercase tracking-[0.2em] px-8 py-3 font-(--font-heading) min-w-36 h-11"
             >
               Explore
             </a>

@@ -18,7 +18,7 @@ function Hero({ logoLettersRef, textRef }) {
     <section className="relative w-full h-screen overflow-hidden">
       <video
         ref={videoRef}
-        className="hero-video"
+        className="hero-video absolute inset-0 w-full h-full object-cover object-center"
         src="/products/hero.mp4"
         autoPlay
         muted
@@ -29,30 +29,27 @@ function Hero({ logoLettersRef, textRef }) {
 
       <div className="hero-bottom-bar absolute bottom-8 left-24 right-16 flex items-end gap-10">
 
-        <Logo className="hero-logo text-[24rem]" lettersRef={logoLettersRef} />
+        <Logo className="hero-logo text-[clamp(6rem,17vw,24rem)]" lettersRef={logoLettersRef} />
 
-        <div ref={textRef} className="hero-text-container flex flex-col items-start gap-6 pb-4 w-md shrink-0">
+        <div ref={textRef} className="hero-text-container flex flex-col items-start gap-6 pb-4 max-w-md shrink-0">
           <div className="flex flex-col gap-4">
-            <p
-              className="hero-subtitle text-[1.6rem] font-semibold uppercase leading-snug"
-              style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-text)', letterSpacing: '0.06em' }}
+            <h1
+              className="hero-subtitle text-[1.6rem] font-semibold uppercase leading-snug font-(family-name:--font-heading) text-(--color-text) tracking-[0.06em]"
             >
               holistic luxury in perfect harmony
-            </p>
+            </h1>
             <p
-              className="hero-description text-[1.2rem] font-semibold leading-relaxed"
-              style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text)' }}
+              className="hero-description text-[1.2rem] font-medium leading-relaxed font-(family-name:--font-body) text-(--color-text)"
             >
               Welcome to Altra Residence, where timeless design, wellness-focused living and cultural enrichment converge in order to create an unparalleled sanctuary of elegance and serenity.
             </p>
           </div>
 
           <div
-            className="hero-scroll flex flex-col items-start gap-2"
-            style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-text)', letterSpacing: '0.25em' }}
+            className="hero-scroll flex flex-col items-start gap-2 font-(--font-heading) text-(--color-text) tracking-[0.25em]"
           >
             <span className="text-[1rem] font-medium uppercase">Scroll</span>
-            <div className="w-px h-10" style={{ background: 'var(--color-text)' }} />
+            <div className="w-px h-10 bg-(--color-text)" />
           </div>
         </div>
 

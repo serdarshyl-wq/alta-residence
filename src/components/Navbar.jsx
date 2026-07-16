@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Logo from './Logo'
+import { preloadLivingImages } from '../utils/preloadLivingImages'
+import { getLenis } from '../utils/lenis'
 import '../css/Navbar.css'
 
 function Navbar({ headerRef, lineRef, setActiveLiving }) {
@@ -10,7 +12,10 @@ function Navbar({ headerRef, lineRef, setActiveLiving }) {
 
   const scrollToReservation = () => {
     const el = document.getElementById('reservation-section')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    if (!el) return
+    const lenis = getLenis()
+    if (lenis) lenis.scrollTo(el, { duration: 1.6 })
+    else el.scrollIntoView({ behavior: 'smooth' })
   }
 
   useEffect(() => {
@@ -39,14 +44,17 @@ function Navbar({ headerRef, lineRef, setActiveLiving }) {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden'
       document.documentElement.style.overflow = 'hidden'
+      getLenis()?.stop()
     } else {
       document.body.style.overflow = ''
       document.documentElement.style.overflow = ''
+      getLenis()?.start()
     }
 
     return () => {
       document.body.style.overflow = ''
       document.documentElement.style.overflow = ''
+      getLenis()?.start()
     }
   }, [isMenuOpen])
 
@@ -68,7 +76,7 @@ function Navbar({ headerRef, lineRef, setActiveLiving }) {
           </div>
 
           <nav className="nav-links flex-1 flex items-center justify-center gap-10">
-            {['Maison Solène', 'Velour Grand', 'Obsidian Atelier'].map((item) => (
+            {['Maison Aurélie', 'Marbre Grand', 'Lumière Atelier'].map((item) => (
               <a
                 key={item}
                 href="#"
@@ -76,8 +84,8 @@ function Navbar({ headerRef, lineRef, setActiveLiving }) {
                   e.preventDefault()
                   if (setActiveLiving) setActiveLiving(item)
                 }}
-                className="nav-link text-[1rem] uppercase tracking-[0.2em]"
-                style={{ fontFamily: 'var(--font-heading)', color: '#ffffff' }}
+                onMouseEnter={() => preloadLivingImages(item)}
+                className="nav-link text-[1rem] uppercase tracking-[0.2em] font-(--font-heading) text-white"
               >
                 {item}
               </a>
@@ -88,14 +96,7 @@ function Navbar({ headerRef, lineRef, setActiveLiving }) {
           <a
             href="#"
             onClick={(e) => { e.preventDefault(); scrollToReservation() }}
-            className="nav-button flex items-center justify-center text-[0.9rem] uppercase tracking-[0.2em] rounded-full px-10 py-3"
-            style={{
-              fontFamily: 'var(--font-heading)',
-              color: 'var(--color-bg-deep)',
-              background: 'var(--color-text)',
-              minWidth: '11rem',
-              height: '3rem',
-            }}
+            className="nav-button flex items-center justify-center text-[0.9rem] uppercase tracking-[0.2em] rounded-full px-10 py-3 font-(--font-heading) text-(--color-bg-deep) bg-(--color-text) min-w-44 h-12"
           >
             Book a Visit
           </a>
@@ -114,15 +115,14 @@ function Navbar({ headerRef, lineRef, setActiveLiving }) {
 
         <div
           ref={lineRef}
-          className="nav-line h-px relative z-50"
-          style={{ marginTop: '1.2rem', background: '#ffffff' }}
+          className="nav-line h-px relative z-50 mt-[1.2rem] bg-white"
         />
       </header>
 
       {mounted && createPortal(
         <div className={`mobile-menu-overlay ${isMenuOpen ? 'open' : ''}`}>
           <nav className="mobile-nav-links">
-            {['Maison Solène', 'Velour Grand', 'Obsidian Atelier'].map((item) => (
+            {['Maison Aurélie', 'Marbre Grand', 'Lumière Atelier'].map((item) => (
               <a
                 key={item}
                 href="#"
@@ -131,8 +131,8 @@ function Navbar({ headerRef, lineRef, setActiveLiving }) {
                   setIsMenuOpen(false)
                   if (setActiveLiving) setActiveLiving(item)
                 }}
-                className="mobile-nav-link"
-                style={{ fontFamily: 'var(--font-heading)' }}
+                onTouchStart={() => preloadLivingImages(item)}
+                className="mobile-nav-link font-(--font-heading)"
               >
                 {item}
               </a>
@@ -140,8 +140,7 @@ function Navbar({ headerRef, lineRef, setActiveLiving }) {
             <a
               href="#"
               onClick={(e) => { e.preventDefault(); setIsMenuOpen(false); scrollToReservation() }}
-              className="mobile-nav-button"
-              style={{ fontFamily: 'var(--font-heading)' }}
+              className="mobile-nav-button font-(--font-heading)"
             >
               Book a Visit
             </a>

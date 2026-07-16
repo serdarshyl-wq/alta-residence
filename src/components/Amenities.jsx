@@ -51,9 +51,7 @@ export default function Amenities() {
           gsap.set(lineRefs.current[i], isDesktop ? { scaleY: 1, scaleX: 1 } : { scaleX: 1, scaleY: 1 })
         } else {
           gsap.set(smallImgRefs.current[i], { yPercent: 100 })
-          if (largeImgSlices.current[i]) {
-            gsap.set(largeImgSlices.current[i], { width: '0%' })
-          }
+          gsap.set(largeImgSlices.current[i], { clipPath: 'inset(0% 0% 100% 0%)' })
           gsap.set(textRefs.current[i], { yPercent: 100 })
           gsap.set(descRefs.current[i], { yPercent: 100, opacity: 0 })
           gsap.set(lineRefs.current[i], isDesktop ? { scaleY: 0, scaleX: 1 } : { scaleX: 0, scaleY: 1 })
@@ -93,8 +91,11 @@ export default function Amenities() {
           ease: 'power2.inOut'
         }, stepTime)
 
+          // Same venetian-blinds reveal as the HomeDetails room switcher,
+          // but clip-path driven instead of height so a scrub-tied, pinned
+          // scroll doesn't force a layout recalc on every frame.
           .to(largeImgSlices.current[next], {
-            width: '100%',
+            clipPath: 'inset(0% 0% 0% 0%)',
             stagger: 0.04,
             duration: 1,
             ease: 'power3.inOut'
@@ -107,7 +108,7 @@ export default function Amenities() {
 
   return (
     <section ref={containerRef} className="amenities-section relative w-full h-screen overflow-hidden flex items-center">
-      <div className="amenities-container relative w-full h-full flex items-center px-40">
+      <div className="amenities-container relative w-full h-full flex items-center pl-4 pr-40">
 
         <div className="am-text-column relative w-2/5 h-[60%] flex flex-col justify-center">
           {SLIDES.map((slide, i) => (
@@ -147,8 +148,8 @@ export default function Amenities() {
         <div className="am-slider-large">
 
           {SLIDES.map((slide, i) => {
-            const slices = 12;
-            if (!largeImgSlices.current[i]) largeImgSlices.current[i] = [];
+            const slices = 12
+            if (!largeImgSlices.current[i]) largeImgSlices.current[i] = []
 
             return (
               <div key={slide.id} className="absolute inset-0" style={{ zIndex: i }}>
@@ -159,8 +160,8 @@ export default function Amenities() {
                     className="am-slice-mask"
                     style={{
                       top: `${(s / slices) * 100}%`,
-                      height: `${100 / slices}%`,
-                      width: i === 0 ? '100%' : '0%'
+                      height: `calc(${100 / slices}% + 1px)`, // +1px overlap so adjacent slices don't leave a seam
+                      clipPath: i === 0 ? 'inset(0% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)'
                     }}
                   >
                     <img
@@ -168,6 +169,7 @@ export default function Amenities() {
                       className="am-slice-img"
                       style={{ top: `-${s * 100}%` }}
                       alt="Large Amenities Visual"
+                      decoding="async"
                     />
                   </div>
                 ))}
@@ -175,7 +177,7 @@ export default function Amenities() {
             )
           })}
 
-          <div className="am-slider-small" style={{ zIndex: 100 }}>
+          <div className="am-slider-small">
             {SLIDES.map((slide, i) => (
               <div
                 key={slide.id}
@@ -187,6 +189,7 @@ export default function Amenities() {
                   src={slide.smallImg}
                   className="am-small-img"
                   alt="Small Amenities Visual"
+                  decoding="async"
                 />
               </div>
             ))}

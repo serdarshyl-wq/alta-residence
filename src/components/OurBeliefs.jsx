@@ -121,8 +121,7 @@ function OurBeliefs() {
   return (
     <section
       ref={sectionRef}
-      className="relative"
-      style={{ background: 'var(--color-bg)' }}
+      className="relative bg-(--color-bg)"
     >
       <div className="beliefs-top-label-wrap px-40 pt-24 flex justify-end">
         <div ref={labelClipRef} className="beliefs-clip">
@@ -139,8 +138,7 @@ function OurBeliefs() {
 
         <div
           ref={imageBoxRef}
-          className="beliefs-image-container"
-          style={{ height: '110vh' }}
+          className="beliefs-image-container h-[110vh]"
         >
           <img
             ref={imageRef}
@@ -152,15 +150,13 @@ function OurBeliefs() {
         <div className="beliefs-right-col flex flex-col">
 
           <div
-            className="beliefs-title-wrap text-right"
-            style={{ width: '180%', marginLeft: '-90%', marginTop: '14rem' }}
+            className="beliefs-title-wrap text-right w-[180%] -ml-[90%] mt-56"
           >
             {TITLE_LINES.map((line, i) => (
               <div key={i} className="beliefs-clip">
                 <h2
                   ref={el => { titleInnerRefs.current[i] = el }}
-                  className="beliefs-inner beliefs-title"
-                  style={{ fontSize: 'clamp(4.5rem, 8vw, 10rem)' }}
+                  className="beliefs-inner beliefs-title text-[clamp(4.5rem,8vw,10rem)]"
                 >
                   {line}
                 </h2>
@@ -170,18 +166,11 @@ function OurBeliefs() {
 
           <div
             ref={descClipRef}
-            className="beliefs-desc-wrap beliefs-clip self-start relative -top-12"
-            style={{ marginTop: '30vh', maxWidth: '28rem' }}
+            className="beliefs-desc-wrap beliefs-clip self-start relative -top-12 mt-[30vh] max-w-md"
           >
             <p
               ref={descInnerRef}
-              className="beliefs-desc-text beliefs-inner text-[2.2rem] leading-relaxed"
-              style={{
-                fontFamily: 'var(--font-body)',
-                color: '#ffffff',
-                fontWeight: 600,
-                maxWidth: 'none',
-              }}
+              className="beliefs-desc-text beliefs-inner text-[2.2rem] leading-relaxed font-(family-name:--font-body) text-white font-medium max-w-none"
             >
               To inspire and nurture an enriched lifestyle that harmonizes
               beauty, wellness, and cultural connection, creating a sanctuary
@@ -206,7 +195,7 @@ function OurBeliefs() {
 
           <div
             ref={el => { boxRefs.current[0] = el }}
-            className="beliefs-box relative mt-[25px] h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/4 backdrop-blur-xl border border-white/15 rounded-3xl shadow-xl"
+            className="beliefs-box relative mt-[25px] h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/10 border border-white/15 rounded-3xl shadow-xl"
           >
             <h3 className="font-(--font-heading) text-[1.3rem] text-center uppercase tracking-wider leading-snug mb-3">
               {BELIEF_BOXES[0].title}
@@ -221,7 +210,7 @@ function OurBeliefs() {
 
           <div
             ref={el => { boxRefs.current[1] = el }}
-            className="beliefs-box relative mt-[25px] h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/4 backdrop-blur-xl border border-white/15 rounded-3xl shadow-xl"
+            className="beliefs-box relative mt-[25px] h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/10 border border-white/15 rounded-3xl shadow-xl"
           >
             <h3 className="font-(--font-heading) text-[1.3rem] text-center uppercase tracking-wider leading-snug mb-3">
               {BELIEF_BOXES[1].title}
@@ -253,7 +242,7 @@ function OurBeliefs() {
 
           <div
             ref={el => { boxRefs.current[2] = el }}
-            className="beliefs-box relative h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/4 backdrop-blur-xl border border-white/15 rounded-3xl shadow-xl"
+            className="beliefs-box relative h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/10 border border-white/15 rounded-3xl shadow-xl"
           >
             <h3 className="font-(--font-heading) text-[1.3rem] text-center uppercase tracking-wider leading-snug mb-3">
               {BELIEF_BOXES[2].title}
@@ -268,7 +257,7 @@ function OurBeliefs() {
 
           <div
             ref={el => { boxRefs.current[3] = el }}
-            className="beliefs-box relative h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/4 backdrop-blur-xl border border-white/15 rounded-3xl shadow-xl"
+            className="beliefs-box relative h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/10 border border-white/15 rounded-3xl shadow-xl"
           >
             <h3 className="font-(--font-heading) text-[1.3rem] text-center uppercase tracking-wider leading-snug mb-3">
               {BELIEF_BOXES[3].title}
@@ -283,7 +272,7 @@ function OurBeliefs() {
 
           <div
             ref={el => { boxRefs.current[4] = el }}
-            className="beliefs-box relative h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/4 backdrop-blur-xl border border-white/15 rounded-3xl shadow-xl"
+            className="beliefs-box relative h-80 max-w-[16rem] flex flex-col items-center justify-center px-6 py-5 bg-white/10 border border-white/15 rounded-3xl shadow-xl"
           >
             <h3 className="font-(--font-heading) text-[1.3rem] text-center uppercase tracking-wider leading-snug mb-3">
               {BELIEF_BOXES[4].title}

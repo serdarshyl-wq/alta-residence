@@ -28,12 +28,7 @@ function Footer() {
   return (
     <footer
       ref={sectionRef}
-      className="footer-section relative px-24"
-      style={{
-        background: 'var(--color-bg)',
-        paddingTop: '10rem',
-        paddingBottom: '5rem',
-      }}
+      className="footer-section relative px-24 bg-(--color-bg) pt-40 pb-20"
     >
 
       <div className="footer-top-grid grid grid-cols-[2fr_1fr_1.2fr] gap-12">
@@ -41,7 +36,7 @@ function Footer() {
         <div className="footer-col-1">
           <span className="footer-label">(Get in Touch)</span>
           <div className="footer-divider mt-4" />
-          <div className="footer-clip" style={{ marginTop: '6rem' }}>
+          <div className="footer-clip mt-24">
             <h2
               ref={el => { itemRefs.current[0] = el }}
               className="footer-brand footer-inner"
@@ -54,7 +49,7 @@ function Footer() {
         <div className="footer-col-2">
           <span className="footer-label">(Location)</span>
           <div className="footer-divider mt-4" />
-          <div className="footer-clip" style={{ marginTop: '6rem' }}>
+          <div className="footer-clip mt-24">
             <p
               ref={el => { itemRefs.current[1] = el }}
               className="footer-text footer-inner"
@@ -68,11 +63,10 @@ function Footer() {
         <div className="footer-col-3">
           <span className="footer-label">(Contact)</span>
           <div className="footer-divider mt-4" />
-          <div className="footer-clip" style={{ marginTop: '6rem' }}>
+          <div className="footer-clip mt-24">
             <p
               ref={el => { itemRefs.current[2] = el }}
-              className="footer-text footer-inner"
-              style={{ fontStyle: 'italic' }}
+              className="footer-text footer-inner italic"
             >
               This is a custom project —<br />
               contact details are not real.
@@ -83,13 +77,12 @@ function Footer() {
       </div>
 
       <div
-        className="footer-bottom grid grid-cols-[2fr_1fr_1.2fr] gap-12 items-center"
-        style={{ marginTop: '5rem', paddingTop: '2.5rem' }}
+        className="footer-bottom grid grid-cols-[2fr_1fr_1.2fr] gap-12 items-center mt-20 pt-10"
       >
         <span className="footer-bottom-text footer-copy">
           ©2026. Altra Residence. All rights reserved.
         </span>
-        <div className="footer-links-wrap" style={{ display: 'contents' }}>
+        <div className="footer-links-wrap contents">
           <a href="#" className="footer-bottom-text hover:opacity-70 justify-self-start">
             Manage cookies
           </a>

@@ -180,14 +180,13 @@ function About() {
   }, [])
 
   return (
-    <section ref={sectionRef} style={{ background: 'var(--color-bg)' }}>
+    <section ref={sectionRef} className="bg-(--color-bg)">
 
       <div className="about-intro-grid grid grid-cols-[1fr_1.2fr_1.4fr] gap-16 px-24 pt-[clamp(8rem,14vw,14rem)] pb-0">
 
-        <div className="about-label-container flex items-start pt-4" style={{ transform: 'translateX(6rem)' }}>
+        <div className="about-label-container flex items-start pt-4 translate-x-24">
           <span
-            className="italic text-[4rem]"
-            style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text-muted)' }}
+            className="italic text-[4rem] font-(--font-body) text-(--color-text-muted)"
           >
             (About)
           </span>
@@ -195,17 +194,14 @@ function About() {
 
         <div
           ref={imageBoxRef}
-          className="about-image-wrapper relative justify-self-start"
-          style={{ width: '100%', maxWidth: '38rem', height: '100vh', marginTop: '8rem' }}
+          className="about-image-wrapper relative justify-self-start w-full max-w-152 h-screen mt-32"
         >
           <div
-            className="desktop-words about-words-container absolute bottom-0 flex-col items-end gap-3 pointer-events-none lg:flex hidden"
-            style={{ right: 'calc(100% + 3rem)', minWidth: '50rem' }}
+            className="desktop-words about-words-container absolute bottom-0 flex-col items-end gap-3 pointer-events-none lg:flex hidden right-[calc(100%+3rem)] min-w-200"
           >
             {['TIMELESS', 'DESIGN', 'WELLNESS-', 'FOCUSED', 'LIVING'].map((word) => (
               <div key={word} className="about-word-clip">
-                <span className="about-word-inner italic uppercase whitespace-nowrap"
-                  style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text)', fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontWeight: 400, letterSpacing: '0.01em', lineHeight: 1.05 }}
+                <span className="about-word-inner italic uppercase whitespace-nowrap font-(family-name:--font-body) text-(--color-text) text-[clamp(2.8rem,5.5vw,5rem)] font-normal tracking-[0.01em] leading-[1.05]"
                 >
                   {word}
                 </span>
@@ -214,13 +210,11 @@ function About() {
           </div>
 
           <div
-            className="mobile-words about-words-container absolute bottom-0 flex flex-col items-start gap-1 pointer-events-none lg:hidden"
-            style={{ right: 'calc(100% + 3rem)', minWidth: '50rem' }}
+            className="mobile-words about-words-container absolute bottom-0 flex flex-col items-start gap-1 pointer-events-none lg:hidden right-[calc(100%+3rem)] min-w-200"
           >
             {['TIMELESS DESIGN', 'WELLNESS-FOCUSED', 'LIVING'].map((word) => (
               <div key={word} className="about-word-clip">
-                <span className="about-word-inner italic uppercase whitespace-nowrap"
-                  style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text)', fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontWeight: 400, letterSpacing: '0.01em', lineHeight: 1.05 }}
+                <span className="about-word-inner italic uppercase whitespace-nowrap font-(family-name:--font-body) text-(--color-text) text-[clamp(2.8rem,5.5vw,5rem)] font-normal tracking-[0.01em] leading-[1.05]"
                 >
                   {word}
                 </span>
@@ -232,19 +226,18 @@ function About() {
             <img
               ref={imageRef}
               src="/products/interior-2.webp"
-              alt="Elyse Residence interior"
+              alt="Altra Residence interior"
             />
           </div>
         </div>
 
-        <div className="about-text-container flex flex-col gap-8" style={{ marginTop: '10rem' }}>
+        <div className="about-text-container flex flex-col gap-8 mt-40">
           <div ref={para1ClipRef} className="about-para-clip">
             <p
               ref={para1InnerRef}
-              className="about-para-inner text-[1.5rem] leading-relaxed"
-              style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text)', fontWeight: 700, maxWidth: 'none' }}
+              className="about-para-inner text-[1.5rem] leading-relaxed font-(family-name:--font-body) text-(--color-text) font-semibold max-w-none"
             >
-              Every element of Elyse Residence reflects a commitment to excellence.
+              Every element of Altra Residence reflects a commitment to excellence.
               From the timeless elegance of its interiors to its thoughtfully curated
               amenities, the property embodies a holistic approach to luxury living.
             </p>
@@ -253,19 +246,17 @@ function About() {
           <div ref={para2ClipRef} className="about-para-clip">
             <p
               ref={para2InnerRef}
-              className="about-para-inner text-[1.5rem] leading-relaxed"
-              style={{ fontFamily: 'var(--font-body)', color: 'var(--color-text)', fontWeight: 700, maxWidth: 'none' }}
+              className="about-para-inner text-[1.5rem] leading-relaxed font-(family-name:--font-body) text-(--color-text) font-semibold max-w-none"
             >
               Whether you're seeking a serene retreat, cultural hub, or a space that
-              fosters personal growth, Elyse Residence offers it all.
+              fosters personal growth, Altra Residence offers it all.
             </p>
           </div>
         </div>
       </div>
 
       <div
-        className="about-stats-wrapper px-24 pb-[clamp(4rem,8vw,8rem)]"
-        style={{ paddingTop: 'clamp(6rem,10vw,10rem)' }}
+        className="about-stats-wrapper px-24 pb-[clamp(4rem,8vw,8rem)] pt-[clamp(6rem,10vw,10rem)]"
       >
         <div className="about-stats-grid grid grid-cols-3 grid-rows-3 gap-y-16 gap-x-8">
 
@@ -281,10 +272,10 @@ function About() {
             <span className="about-stat-label">exclusive residences, each tailored for comfort &amp; elegance.</span>
           </div>
 
-          <div className="about-stat-item about-stat-150k flex flex-col gap-3" style={{ marginLeft: '60%' }}>
+          <div className="about-stat-item about-stat-150k flex flex-col gap-3 ml-[60%]">
             <div className="flex items-baseline gap-2 whitespace-nowrap">
               <span ref={stat150kRef} className="about-stat-number">0</span>
-              <span className="about-stat-number whitespace-nowrap about-stat-m2" style={{ fontSize: 'clamp(4rem,7vw,8rem)' }}>m²</span>
+              <span className="about-stat-number whitespace-nowrap about-stat-m2 text-[clamp(4rem,7vw,8rem)]">m²</span>
             </div>
             <span className="about-stat-label">total green spaces for tranquility &amp; wellness.</span>
           </div>

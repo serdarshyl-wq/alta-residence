@@ -1,14 +1,18 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { flushSync } from 'react-dom'
+import { Helmet } from 'react-helmet-async'
 import gsap from 'gsap'
-import { livingDetails } from '../data/LivingDetails'
+import { X } from 'lucide-react'
+import livingDetails from '../data/livingDetails.json'
+import { getLenis } from '../utils/lenis'
+import { LIVING_SLUGS } from '../utils/livingSlugs'
+import { SITE_URL, SITE_NAME, getLivingSchema } from '../utils/seo'
 import '../css/HomeDetails.css'
 
 const SLICES = 28
 
 function HomeDetails({ activeLiving, onClose }) {
   const [activeRoomIdx, setActiveRoomIdx] = useState(0)
-  const [prevRoomIdx, setPrevRoomIdx] = useState(0)
 
   const overlayRef = useRef(null)
   const leftPaneRef = useRef(null)
@@ -24,22 +28,23 @@ function HomeDetails({ activeLiving, onClose }) {
   useEffect(() => {
     if (activeLiving) {
       setActiveRoomIdx(0)
-      setPrevRoomIdx(0)
       imgAnimating.current = false
       document.body.classList.add('hd-overlay-open')
+      document.documentElement.classList.add('hd-overlay-open')
+      getLenis()?.stop()
     } else {
       document.body.classList.remove('hd-overlay-open')
+      document.documentElement.classList.remove('hd-overlay-open')
+      getLenis()?.start()
     }
 
-    return () => document.body.classList.remove('hd-overlay-open')
+    return () => {
+      document.body.classList.remove('hd-overlay-open')
+      document.documentElement.classList.remove('hd-overlay-open')
+      getLenis()?.start()
+    }
   }, [activeLiving])
 
-  useEffect(() => {
-    if (!activeLiving) return
-    const prev = document.title
-    document.title = `ALTA - ${activeLiving}`
-    return () => { document.title = prev }
-  }, [activeLiving])
 
   useLayoutEffect(() => {
     if (!activeLiving) return
@@ -133,7 +138,6 @@ function HomeDetails({ activeLiving, onClose }) {
       ease: 'power3.inOut',
       onComplete: () => {
         flushSync(() => {
-          setPrevRoomIdx(newIdx)
           setActiveRoomIdx(newIdx)
         })
         overlay.remove()
@@ -162,15 +166,26 @@ function HomeDetails({ activeLiving, onClose }) {
     const reservationEl = document.getElementById('reservation-section')
     const myId = ++closeIdRef.current
 
+    const jumpToReservation = () => {
+      const lenis = getLenis()
+      if (lenis) {
+        lenis.start()
+        lenis.scrollTo(reservationEl, { immediate: true })
+      } else {
+        reservationEl.scrollIntoView({ behavior: 'instant' })
+      }
+    }
+
     if (!overlayRef.current || !reservationEl) {
       onClose()
-      if (reservationEl) reservationEl.scrollIntoView({ behavior: 'instant' })
+      if (reservationEl) jumpToReservation()
       return
     }
 
     reservationEl.style.opacity = '0'
     document.body.classList.remove('hd-overlay-open')
-    reservationEl.scrollIntoView({ behavior: 'instant' })
+    document.documentElement.classList.remove('hd-overlay-open')
+    jumpToReservation()
 
     const fadeInReservation = () => {
       gsap.to(reservationEl, {
@@ -198,9 +213,34 @@ function HomeDetails({ activeLiving, onClose }) {
   if (!details) return null
 
   const activeRoom = details.rooms[activeRoomIdx]
+  const pageUrl = `${SITE_URL}/${LIVING_SLUGS[activeLiving]}`
+  const pageTitle = `${details.name} — ${SITE_NAME}`
+  const ogImageUrl = `${SITE_URL}${encodeURI(activeRoom.image)}`
 
   return (
     <div ref={overlayRef} className="home-details-overlay">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={details.description} />
+        <link rel="canonical" href={pageUrl} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={details.description} />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:url" content={pageUrl} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={details.description} />
+        <meta name="twitter:image" content={ogImageUrl} />
+
+        <script type="application/ld+json">
+          {JSON.stringify(getLivingSchema(details, pageUrl, ogImageUrl))}
+        </script>
+      </Helmet>
+
       {/* Left Pane */}
       <div ref={leftPaneRef} className="hd-left">
         <img
@@ -208,6 +248,7 @@ function HomeDetails({ activeLiving, onClose }) {
           alt={`${details.name} ${activeRoom.name}`}
           className="hd-main-img"
           decoding="async"
+          fetchPriority="high"
           style={activeRoom.objectPosition ? { objectPosition: activeRoom.objectPosition } : undefined}
         />
 
@@ -215,9 +256,10 @@ function HomeDetails({ activeLiving, onClose }) {
           {details.rooms.map((room, idx) => (
             <img
               key={idx}
-              src={room.image}
+              src={room.thumb || room.image}
               alt={room.name}
               className={`hd-thumbnail ${idx === activeRoomIdx ? 'active' : ''}`}
+              decoding="async"
               onClick={() => handleRoomChange(idx)}
             />
           ))}
@@ -231,31 +273,31 @@ function HomeDetails({ activeLiving, onClose }) {
             <span ref={el => { textInnerRefs.current[0] = el }} className="hd-inner hd-logo">ALTA</span>
           </div>
           <button ref={closeBtnRef} className="hd-close-btn" onClick={handleClose} aria-label="Close">
-            <i className="fa-solid fa-xmark"></i>
+            <X size={18} strokeWidth={2} />
           </button>
         </div>
 
         <div ref={dividerRef} className="hd-divider hd-m-order-2" />
 
-        <div className="hd-clip hd-m-order-5" style={{ marginBottom: '2rem' }}>
-          <h2 ref={el => { textInnerRefs.current[1] = el }} className="hd-inner hd-subtitle" style={{ margin: 0 }}>{details.name} RESIDENCES</h2>
+        <div className="hd-clip hd-m-order-5 mb-8">
+          <h2 ref={el => { textInnerRefs.current[1] = el }} className="hd-inner hd-subtitle m-0">{details.name} RESIDENCES</h2>
         </div>
 
-        <div className="hd-clip hd-m-order-6" style={{ marginBottom: '4rem' }}>
-          <p ref={el => { textInnerRefs.current[2] = el }} className="hd-inner hd-description" style={{ margin: 0 }}>
+        <div className="hd-clip hd-m-order-6 mb-16">
+          <p ref={el => { textInnerRefs.current[2] = el }} className="hd-inner hd-description m-0">
             {details.description}
           </p>
         </div>
 
-        <div className="hd-clip hd-m-order-4" style={{ marginBottom: 'auto' }}>
+        <div className="hd-clip hd-m-order-4 mb-auto">
           <div ref={el => { textInnerRefs.current[3] = el }} className="hd-inner">
             <button className="hd-book-btn" onClick={handleBookVisit}>BOOK A VISIT</button>
           </div>
         </div>
 
-        <div className="hd-room-info hd-m-order-3" style={{ marginTop: '3rem' }}>
-          <div className="hd-clip" style={{ marginBottom: '0.5rem' }}>
-            <h3 ref={el => { textInnerRefs.current[4] = el }} className="hd-inner hd-room-name" style={{ margin: 0 }}>{activeRoom.name}</h3>
+        <div className="hd-room-info hd-m-order-3 mt-12">
+          <div className="hd-clip mb-2">
+            <h3 ref={el => { textInnerRefs.current[4] = el }} className="hd-inner hd-room-name m-0">{activeRoom.name}</h3>
           </div>
           <div className="hd-clip">
             <div ref={el => { textInnerRefs.current[5] = el }} className="hd-inner hd-room-area-container">
