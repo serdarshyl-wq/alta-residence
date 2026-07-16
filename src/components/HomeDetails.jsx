@@ -6,8 +6,10 @@ import livingDetails from '../data/livingDetails.json'
 import { getLenis } from '../utils/lenis'
 import { LIVING_SLUGS } from '../utils/livingSlugs'
 import { SITE_URL, SITE_NAME, getLivingSchema } from '../utils/seo'
+import { applyMeta } from '../utils/applyMeta'
 import '../css/HomeDetails.css'
 
+const isServer = typeof window === 'undefined'
 const SLICES = 28
 
 function HomeDetails({ activeLiving, onClose }) {
@@ -44,6 +46,29 @@ function HomeDetails({ activeLiving, onClose }) {
     }
   }, [activeLiving])
 
+  // Client-side counterpart to the server-only <title>/<meta> JSX further
+  // down — see applyMeta.js for why this can't just be the same JSX on the
+  // client.
+  useEffect(() => {
+    if (!activeLiving) return
+    const details = livingDetails[activeLiving]
+    if (!details) return
+    const room = details.rooms[activeRoomIdx]
+    const pageUrl = `${SITE_URL}/${LIVING_SLUGS[activeLiving]}`
+    const pageTitle = `${details.name} — ${SITE_NAME}`
+    const ogImageUrl = `${SITE_URL}${encodeURI(room.image)}`
+
+    applyMeta({
+      title: pageTitle,
+      description: details.description,
+      canonical: pageUrl,
+      ogTitle: pageTitle,
+      ogDescription: details.description,
+      ogImage: ogImageUrl,
+      ogUrl: pageUrl,
+      jsonLd: getLivingSchema(details, pageUrl, ogImageUrl),
+    })
+  }, [activeLiving, activeRoomIdx])
 
   useLayoutEffect(() => {
     if (!activeLiving) return
@@ -218,26 +243,31 @@ function HomeDetails({ activeLiving, onClose }) {
 
   return (
     <div ref={overlayRef} className="home-details-overlay">
-      {/* React 19 hoists these into <head> on its own — no Helmet needed. */}
-      <title>{pageTitle}</title>
-      <meta name="description" content={details.description} />
-      <link rel="canonical" href={pageUrl} />
+      {/* Server-only — see the matching comment in App.jsx for why these
+          aren't rendered client-side. */}
+      {isServer && (
+        <>
+          <title>{pageTitle}</title>
+          <meta name="description" content={details.description} />
+          <link rel="canonical" href={pageUrl} />
 
-      <meta property="og:type" content="website" />
-      <meta property="og:site_name" content={SITE_NAME} />
-      <meta property="og:title" content={pageTitle} />
-      <meta property="og:description" content={details.description} />
-      <meta property="og:image" content={ogImageUrl} />
-      <meta property="og:url" content={pageUrl} />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content={SITE_NAME} />
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={details.description} />
+          <meta property="og:image" content={ogImageUrl} />
+          <meta property="og:url" content={pageUrl} />
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={pageTitle} />
-      <meta name="twitter:description" content={details.description} />
-      <meta name="twitter:image" content={ogImageUrl} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={pageTitle} />
+          <meta name="twitter:description" content={details.description} />
+          <meta name="twitter:image" content={ogImageUrl} />
 
-      <script type="application/ld+json">
-        {JSON.stringify(getLivingSchema(details, pageUrl, ogImageUrl))}
-      </script>
+          <script type="application/ld+json">
+            {JSON.stringify(getLivingSchema(details, pageUrl, ogImageUrl))}
+          </script>
+        </>
+      )}
 
       {/* Left Pane */}
       <div ref={leftPaneRef} className="hd-left">

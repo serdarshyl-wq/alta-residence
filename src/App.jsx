@@ -15,6 +15,9 @@ import { preloadAllLivingImages } from './utils/preloadLivingImages'
 import { initLenis, destroyLenis } from './utils/lenis'
 import { LIVING_SLUGS, SLUG_TO_LIVING } from './utils/livingSlugs'
 import { SITE_URL, SITE_NAME, DEFAULT_TITLE, DEFAULT_DESCRIPTION, OG_IMAGE, getHomeSchema } from './utils/seo'
+import { applyMeta } from './utils/applyMeta'
+
+const isServer = typeof window === 'undefined'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -34,6 +37,22 @@ function App({ url } = {}) {
     initLenis()
     return () => destroyLenis()
   }, [])
+
+  // Client-side counterpart to the server-only <title>/<meta> JSX below —
+  // see applyMeta.js for why this can't just be the same JSX on the client.
+  useEffect(() => {
+    if (activeLiving) return
+    applyMeta({
+      title: DEFAULT_TITLE,
+      description: DEFAULT_DESCRIPTION,
+      canonical: `${SITE_URL}/`,
+      ogTitle: DEFAULT_TITLE,
+      ogDescription: DEFAULT_DESCRIPTION,
+      ogImage: OG_IMAGE,
+      ogUrl: `${SITE_URL}/`,
+      jsonLd: getHomeSchema(),
+    })
+  }, [activeLiving])
 
   // Keep the URL in sync with the open HomeDetails overlay — one living per
   // path, "/" when closed — and let back/forward navigate the overlay too.
@@ -100,13 +119,14 @@ function App({ url } = {}) {
 
   return (
     <>
-      {/* React 19 hoists <title>/<meta>/<link>/<script> anywhere in the tree
-          into <head> on its own, both during SSR and on the client — no
-          Helmet library needed, and none of the double-management conflicts
-          that come with layering one on top of React's native handling.
-          Still only one of these blocks may be mounted at a time — HomeDetails
-          renders its own when a living is open. */}
-      {!activeLiving && (
+      {/* Server-only: the prerender script extracts these out of the SSR
+          string and places them in the static file's real <head>. They're
+          deliberately NOT rendered client-side (see applyMeta.js) — if they
+          were part of the hydrated tree, React would expect to find them at
+          this exact position in the DOM, but the prerender script already
+          stripped them out of #root's markup, and that mismatch is what
+          caused React error #418 here. */}
+      {isServer && !activeLiving && (
         <>
           <title>{DEFAULT_TITLE}</title>
           <meta name="description" content={DEFAULT_DESCRIPTION} />
